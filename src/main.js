@@ -26,6 +26,7 @@ const state = {
   arrows: createArrows(),
   boardMiss: false,
   levelWon: false,
+  isAnimating: false,
 }
 
 function createArrows() {
@@ -53,6 +54,7 @@ function resetLevel() {
   state.lives = MAX_LIVES
   state.levelWon = false
   state.boardMiss = false
+  state.isAnimating = false
   state.arrows = createArrows()
 }
 
@@ -311,7 +313,7 @@ function triggerMissFeedback() {
 }
 
 function handleArrowPress(button) {
-  if (state.levelWon || state.lives === 0) {
+  if (state.levelWon || state.lives === 0 || state.isAnimating) {
     return
   }
 
@@ -322,6 +324,7 @@ function handleArrowPress(button) {
     return
   }
 
+  state.isAnimating = true
   arrow.launched = true
   button.classList.add('is-launching', `is-${arrow.direction}`)
   button.setAttribute('disabled', 'true')
@@ -329,6 +332,7 @@ function handleArrowPress(button) {
   window.setTimeout(() => {
     arrow.removed = true
     arrow.launched = false
+    state.isAnimating = false
     state.levelWon = state.arrows.every((item) => item.removed)
     render()
   }, 620)
@@ -357,7 +361,7 @@ app.addEventListener('click', (event) => {
   }
 
   const board = event.target.closest('[data-board]')
-  if (board && state.lives > 0 && !state.levelWon) {
+  if (board && state.lives > 0 && !state.levelWon && !state.isAnimating) {
     state.lives -= 1
     triggerMissFeedback()
   }
