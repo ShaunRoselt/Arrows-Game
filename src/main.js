@@ -214,11 +214,12 @@ function renderLevelScreen() {
         </div>
       </div>
 
-      <button
+      <div
         class="board${state.boardMiss ? ' board--missed' : ''}"
         data-board
         style="--board-glow:${state.settings.contrast}%;"
         aria-label="Level 1 game board"
+        role="group"
       >
         <span class="board-grid" aria-hidden="true"></span>
         ${state.arrows.map((arrow) => renderArrow(arrow, arrow.id === nextArrowId)).join('')}
@@ -252,7 +253,7 @@ function renderLevelScreen() {
             `
             : ''
         }
-      </button>
+      </div>
     </section>
   `
 }
