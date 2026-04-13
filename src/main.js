@@ -1,6 +1,7 @@
 import './style.css'
 
 const app = document.querySelector('#app')
+const MAX_LIVES = 3
 
 const levelLayout = [
   { id: 1, x: 17, y: 18, direction: 'right', label: 'Arrow pointing right' },
@@ -21,7 +22,7 @@ const defaultSettings = {
 const state = {
   screen: 'home',
   settings: loadSettings(),
-  lives: 3,
+  lives: MAX_LIVES,
   arrows: createArrows(),
   boardMiss: false,
   levelWon: false,
@@ -49,7 +50,7 @@ function saveSettings() {
 }
 
 function resetLevel() {
-  state.lives = 3
+  state.lives = MAX_LIVES
   state.levelWon = false
   state.boardMiss = false
   state.arrows = createArrows()
@@ -186,7 +187,7 @@ function renderArrow(arrow, isHintTarget) {
 function renderLevelScreen() {
   const arrowsLeft = state.arrows.filter((arrow) => !arrow.removed)
   const nextArrowId = arrowsLeft[0]?.id
-  const hearts = Array.from({ length: 3 }, (_, index) =>
+  const hearts = Array.from({ length: MAX_LIVES }, (_, index) =>
     `<span class="life ${index < state.lives ? 'life--active' : ''}" aria-hidden="true">♥</span>`,
   ).join('')
 
